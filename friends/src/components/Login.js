@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 
 class Login extends React.Component {
-    state={
+    state = {
         credentials: {
             username: '',
             password: ''
@@ -19,11 +19,19 @@ class Login extends React.Component {
     };
 
     login = e => {
-        e.preventDefault();
+        // e.preventDefault();
+        axios.post("http://localhost:5000/api/login", {
+            username: this.state.credentials.username,
+            password: this.state.credentials.password
+        })
+        .then(response => {
+            localStorage.setItem("token", response.data.payload)
+        })
+        .catch( error => console.log("ERROR", error ))
     };
 
     render() {
-        return(
+        return (
             <div>
                 <h1>Log In here!</h1>
                 <form onSubmit={this.login}>
@@ -44,8 +52,8 @@ class Login extends React.Component {
                     <button>Log In!</button>
                 </form>
             </div>
-        )
-    }
-}
+        );
+    };
+};
 
 export default Login;
